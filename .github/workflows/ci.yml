@@ -5,6 +5,17 @@ on:
     branches:
       - "**"
   pull_request:
+  workflow_dispatch:
+    inputs:
+      smoke_target:
+        description: "Select smoke tests to run"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - flask
+          - fastapi
 
 jobs:
   lint-and-syntax:
@@ -39,6 +50,7 @@ jobs:
     name: Flask API Smoke Test
     runs-on: ubuntu-latest
     needs: lint-and-syntax
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.smoke_target == 'all' || github.event.inputs.smoke_target == 'flask'
 
     steps:
       - name: Checkout repository
@@ -114,6 +126,7 @@ jobs:
     name: FastAPI API Smoke Test
     runs-on: ubuntu-latest
     needs: lint-and-syntax
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.smoke_target == 'all' || github.event.inputs.smoke_target == 'fastapi'
 
     steps:
       - name: Checkout repository
