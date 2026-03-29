@@ -1,0 +1,6 @@
+ source /home/pet-nitin/Desktop/cicdbasic/venv/bin/activate
+venv/
+__pycache__/
+*.pyc
+node_modules/
+.env
